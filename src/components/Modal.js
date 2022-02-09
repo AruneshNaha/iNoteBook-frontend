@@ -1,46 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
-import noteContext from "../context/notes/NoteContext";
+import React, { useState, useContext } from "react";
 import { Modal, ModalBody, ModalFooter } from "react-bootstrap";
-import NoteItem from "./NoteItem";
+import NoteContext from "../context/notes/NoteContext";
 
-export default function Note() {
-  const context = useContext(noteContext);
-  const { notes, getAllNotes, editNote } = context;
-  const [showModal, setShowModal] = useState(false);
-
+export const ModalComponent = (props) => {
   const [note, setNote] = useState({ title: "", description: "", tag: "" });
-
-  useEffect(() => {
-    getAllNotes();
-    //eslint-disable-next-line
-  }, []);
+  const { showModal, titleValue, descValue, tag } = props
 
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
 
-  const updateNote = (note) => {
-    setShowModal(true)
-    setNote(note)
-  }
+  const context = useContext(NoteContext)
+  const { closeModal } = context
 
-  const updateNoteToBackend = (e) => {
-    e.preventDefault()
-    editNote(note._id, note.title, note.description, note.tag)
-    closeModal()
-    getAllNotes()
-  }
-
-  const closeModal = () => {
-    setShowModal(false)
-  }
-  
   return (
-    <div className="row my-3">
-      <h1>Your notes</h1>
+    <div>
       <Modal show={showModal} >
-        <Modal.Header>
-          <h5>Edit this note</h5>
+        <Modal.Header closeButton>
+          <h5>Hi I am modal</h5>
         </Modal.Header>
         <ModalBody>
           <form>
@@ -52,7 +29,7 @@ export default function Note() {
                 name="title"
                 type="text"
                 onChange={onChange}
-                value={note.title}
+                value={titleValue}
                 className="form-control"
                 id="title"
               />
@@ -65,7 +42,7 @@ export default function Note() {
               <input
                 name="description"
                 type="text"
-                value={note.description}
+                value={descValue}
                 onChange={onChange}
                 className="form-control"
                 id="description"
@@ -78,7 +55,7 @@ export default function Note() {
               <input
                 name="tag"
                 type="text"
-                value={note.tag}
+                value={tag}
                 onChange={onChange}
                 className="form-control"
                 id="tag"
@@ -87,24 +64,14 @@ export default function Note() {
           </form>
         </ModalBody>
         <ModalFooter>
-          <button onClick={updateNoteToBackend} className="btn btn-secondary">
+          <button onClick={closeModal} className="btn btn-secondary">
             Update Note
           </button>
-          <button onClick={closeModal} className="btn btn-primary">
+          <button onClick={() => {}} className="btn btn-primary">
             Close
           </button>
         </ModalFooter>
       </Modal>
-      
-      {notes.map((note) => {
-        return (
-          <NoteItem
-            key={note._id}
-            note={note}
-            updateNote={updateNote}
-          ></NoteItem>
-        );
-      })}
     </div>
   );
-}
+};

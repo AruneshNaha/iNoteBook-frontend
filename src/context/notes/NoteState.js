@@ -19,7 +19,6 @@ const NoteState = (props) => {
     });
 
     const json = await response.json()
-    console.log(json)
     setNotes(json)
   }
 
@@ -35,7 +34,6 @@ const NoteState = (props) => {
     });
     const json = response.json();
 
-    console.log(json);
     const note = {
       title: title,
       description: description,
@@ -67,7 +65,7 @@ const NoteState = (props) => {
   //TODO:Edit a note
   const editNote = async (id, title, description, tag) => {
     const response = await fetch(`${host}api/notes/updatenote/${id}`, {
-      method: "POST",
+      method: "PUT",
 
       headers: {
         "Content-Type": "application/json",
@@ -82,11 +80,13 @@ const NoteState = (props) => {
     for (let index = 0; index < notes.length; index++) {
       const element = notes[index];
       if (element._id === id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        notes[index].title = title;
+        notes[index].description = description;
+        notes[index].tag = tag;
+        break;
       }
     }
+    setNotes(notes)
   };
 
   //TODO:Read note

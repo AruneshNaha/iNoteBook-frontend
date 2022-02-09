@@ -6,6 +6,7 @@ export const Home = () => {
   
   return (
     <div>
+      <h1>Add a note</h1>
       <AddNote/>
         <Note/>
       </div>
