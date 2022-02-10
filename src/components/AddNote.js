@@ -8,6 +8,7 @@ export const AddNote = () => {
   const handleClick = (e) => {
     e.preventDefault();
     addNotes(note.title, note.description, note.tag);
+    setNote({ title: "", description: "", tag: "" });
   };
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
@@ -16,7 +17,6 @@ export const AddNote = () => {
   return (
     <>
       <div className="container my-3">
-        
         <form>
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
@@ -27,7 +27,10 @@ export const AddNote = () => {
               type="text"
               onChange={onChange}
               className="form-control"
+              value={note.title}
               id="title"
+              minLength={5}
+              required
             />
             <div id="emailHelp" className="form-text"></div>
           </div>
@@ -39,8 +42,11 @@ export const AddNote = () => {
               name="description"
               type="text"
               onChange={onChange}
+              value={note.description}
               className="form-control"
               id="description"
+              minLength={5}
+              required
             />
           </div>
           <div className="mb-3">
@@ -51,12 +57,14 @@ export const AddNote = () => {
               name="tag"
               type="text"
               onChange={onChange}
+              value={note.tag}
               className="form-control"
               id="tag"
             />
           </div>
 
           <button
+            disabled={note.title.length < 5 || note.description.length < 5}
             type="submit"
             className="btn btn-primary"
             onClick={handleClick}

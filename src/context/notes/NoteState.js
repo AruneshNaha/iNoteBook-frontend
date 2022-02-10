@@ -4,53 +4,47 @@ import { useState } from "react";
 
 const NoteState = (props) => {
   const host = "http://localhost:5000/";
-  const notesInitial = []
+  const notesInitial = [];
 
   const [notes, setNotes] = useState(notesInitial);
 
-  const getAllNotes = async() => {
+  const getAllNotes = async () => {
     const response = await fetch(`${host}api/notes/fetchallnotes`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "authtoken":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFmNTdiZGVhZjdhYzIyNWVlMzZkMTEzIn0sImlhdCI6MTY0MzU1Nzk1NH0.ySj_Vrudp2bz9_GfSQswCSuVjH5CVjRyCWfoofk4Usk",
+        authtoken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFmNTdiZGVhZjdhYzIyNWVlMzZkMTEzIn0sImlhdCI6MTY0MzU1Nzk1NH0.ySj_Vrudp2bz9_GfSQswCSuVjH5CVjRyCWfoofk4Usk",
       },
     });
 
-    const json = await response.json()
-    setNotes(json)
-  }
+    const json = await response.json();
+    setNotes(json);
+  };
 
   const addNotes = async (title, description, tag) => {
     const response = await fetch(`${host}api/notes/addnote`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "authtoken":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFmNTdiZGVhZjdhYzIyNWVlMzZkMTEzIn0sImlhdCI6MTY0MzU1Nzk1NH0.ySj_Vrudp2bz9_GfSQswCSuVjH5CVjRyCWfoofk4Usk",
+        authtoken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFmNTdiZGVhZjdhYzIyNWVlMzZkMTEzIn0sImlhdCI6MTY0MzU1Nzk1NH0.ySj_Vrudp2bz9_GfSQswCSuVjH5CVjRyCWfoofk4Usk",
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    const json = response.json();
-
-    const note = {
-      title: title,
-      description: description,
-      tag: tag,
-    };
+    const note = await response.json();
+    console.log(note);
     setNotes(notes.concat(note));
   };
 
   //TODO:Delete a note
-  const deleteNote = async(id) => {
-
+  const deleteNote = async (id) => {
     const response = await fetch(`${host}api/notes/deletenote/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "authtoken":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFmNTdiZGVhZjdhYzIyNWVlMzZkMTEzIn0sImlhdCI6MTY0MzU1Nzk1NH0.ySj_Vrudp2bz9_GfSQswCSuVjH5CVjRyCWfoofk4Usk",
+        authtoken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFmNTdiZGVhZjdhYzIyNWVlMzZkMTEzIn0sImlhdCI6MTY0MzU1Nzk1NH0.ySj_Vrudp2bz9_GfSQswCSuVjH5CVjRyCWfoofk4Usk",
       },
     });
     const json = response.json();
@@ -69,8 +63,8 @@ const NoteState = (props) => {
 
       headers: {
         "Content-Type": "application/json",
-        "authtoken":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFmNTdiZGVhZjdhYzIyNWVlMzZkMTEzIn0sImlhdCI6MTY0MzU1Nzk1NH0.ySj_Vrudp2bz9_GfSQswCSuVjH5CVjRyCWfoofk4Usk",
+        authtoken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFmNTdiZGVhZjdhYzIyNWVlMzZkMTEzIn0sImlhdCI6MTY0MzU1Nzk1NH0.ySj_Vrudp2bz9_GfSQswCSuVjH5CVjRyCWfoofk4Usk",
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -86,14 +80,16 @@ const NoteState = (props) => {
         break;
       }
     }
-    setNotes(notes)
+    setNotes(notes);
   };
 
   //TODO:Read note
   const readNote = () => {};
 
   return (
-    <NoteContext.Provider value={{ notes, addNotes, deleteNote, editNote, getAllNotes }}>
+    <NoteContext.Provider
+      value={{ notes, addNotes, deleteNote, editNote, getAllNotes }}
+    >
       {props.children}
     </NoteContext.Provider>
   );
