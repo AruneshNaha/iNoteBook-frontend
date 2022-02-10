@@ -1,16 +1,19 @@
-import React, {useEffect}  from "react";
+import React, {useEffect, useContext}  from "react";
 import { Link, useLocation } from "react-router-dom";
+import AuthContext from "../context/authentication/AuthContext";
 
 const Navbar = () => {
 
   let location = useLocation()
+  const context = useContext(AuthContext)
+  const {authToken} = context
 
   useEffect(() => {
   }, [location]);
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             iNotebook
@@ -38,49 +41,13 @@ const Navbar = () => {
                   About
                 </Link>
               </li>
-              <li className="nav-item dropdown">
-                <Link
-                  className="nav-link dropdown-toggle"
-                  to="/"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown
-                </Link>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <Link className="dropdown-item" to="/">
-                      Action
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/">
-                      Another action
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/">
-                      Something else here
-                    </Link>
-                  </li>
-                </ul>
-              </li>
+              
             </ul>
             <form className="d-flex">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
+            {authToken === "" && <Link className="btn btn-warning mx-2" to="/login" role="button">Login</Link>}
+            {authToken === "" && <Link className="btn btn-primary mx-2" to="/signup" role="button">Signup</Link>}
+            <Link className="btn btn-danger mx-2" to="/" role="button">Logout</Link>
+                Logout
             </form>
           </div>
         </div>
