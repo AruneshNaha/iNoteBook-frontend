@@ -1,19 +1,41 @@
-import React, { useContext, useState } from 'react'
-import AuthContext from '../context/authentication/AuthContext';
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/authentication/AuthContext";
 
 export const Signup = () => {
-  const [credentials, setCredentials] = useState({ email: "", name: "", password: "" });
+  const [credentials, setCredentials] = useState({
+    email: "",
+    name: "",
+    password: "",
+  });
+  const host = "http://localhost:5000";
+
   const context = useContext(AuthContext);
-  const { signup, authToken } = context;
+  const { authenticate } = context;
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    signup(credentials.email, credentials.name, credentials.password);
-    console.log(authToken)
+    const response = await fetch(`${host}/api/auth/createuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: credentials.email,
+        name: credentials.name,
+        password: credentials.password,
+      }),
+    });
+
+    const auth = await response.json();
+    localStorage.setItem("token", auth.authtoken);
+    authenticate();
+    navigate("/");
   };
 
   return (
@@ -68,4 +90,4 @@ export const Signup = () => {
       </div>
     </div>
   );
-}
+};

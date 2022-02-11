@@ -1,13 +1,10 @@
 import React, {useEffect, useContext}  from "react";
 import { Link, useLocation } from "react-router-dom";
-import AuthContext from "../context/authentication/AuthContext";
 
 const Navbar = () => {
 
   let location = useLocation()
-  const context = useContext(AuthContext)
-  const {authToken} = context
-
+const token = localStorage.getItem('token')
   useEffect(() => {
   }, [location]);
 
@@ -44,9 +41,9 @@ const Navbar = () => {
               
             </ul>
             <form className="d-flex">
-            {authToken === "" && <Link className="btn btn-warning mx-2" to="/login" role="button">Login</Link>}
-            {authToken === "" && <Link className="btn btn-primary mx-2" to="/signup" role="button">Signup</Link>}
-            <Link className="btn btn-danger mx-2" to="/" role="button">Logout</Link>
+            {token === null && <Link className="btn btn-warning mx-2" to="/login" role="button">Login</Link>}
+            {token === null && <Link className="btn btn-primary mx-2" to="/signup" role="button">Signup</Link>}
+            {token !== null && <Link className="btn btn-danger mx-2" to="/logout" role="button" onClick={() => {localStorage.clear()}}>Logout</Link>}
                 Logout
             </form>
           </div>
