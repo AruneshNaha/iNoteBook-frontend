@@ -7,7 +7,7 @@ export const Login = () => {
   const host = "http://localhost:5000";
   const context = useContext(AuthContext);
   const { authenticate, authToken } = context;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -15,21 +15,28 @@ export const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${host}/api/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: credentials.email, password: credentials.password }),
-    });
+    try {
+      const response = await fetch(`${host}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
 
-    const auth = await response.json();
-    const statusCode = await response.status
-    console.log(statusCode)
-    localStorage.setItem('token', auth.authtoken)
-    console.log(authToken)
-    authenticate()
-    navigate("/")
+      const auth = await response.json();
+      const statusCode = await response.status;
+      console.log(statusCode);
+      localStorage.setItem("token", auth.authtoken);
+      console.log(authToken);
+      authenticate();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

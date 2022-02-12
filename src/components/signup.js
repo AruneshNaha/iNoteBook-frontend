@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/authentication/AuthContext";
 
-export const Signup = () => {
+export const Signup = (props) => {
   const [credentials, setCredentials] = useState({
     email: "",
     name: "",
@@ -20,22 +20,27 @@ export const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${host}/api/auth/createuser`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: credentials.email,
-        name: credentials.name,
-        password: credentials.password,
-      }),
-    });
+    try {
+      const response = await fetch(`${host}/api/auth/createuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          name: credentials.name,
+          password: credentials.password,
+        }),
+      });
 
-    const auth = await response.json();
-    localStorage.setItem("token", auth.authtoken);
-    authenticate();
-    navigate("/");
+      const auth = await response.json();
+      localStorage.setItem("token", auth.authtoken);
+      authenticate();
+      navigate("/");
+      props.showAlert("success", "You are successfully signed up!");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

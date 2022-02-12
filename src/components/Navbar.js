@@ -1,4 +1,4 @@
-import React, {useEffect, useContext}  from "react";
+import React, {useEffect}  from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
@@ -10,7 +10,7 @@ const token = localStorage.getItem('token')
 
   return (
     <div>
-      <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             iNotebook

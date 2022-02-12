@@ -14,7 +14,7 @@ function App() {
     <NoteState>
       <Router>
         <Navbar />
-        <div className="container">
+        {/* <div className="container"> */}
         <Routes>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
@@ -22,7 +22,7 @@ function App() {
           <Route exact path="/about" element={<About />} />
           <Route exact path="/logout" element={<Logout />} />
         </Routes>
-        </div>
+        {/* </div> */}
       </Router>
     </NoteState>
     </AuthState>
